@@ -1,4 +1,4 @@
-module ssh-tools
+module github.com/p3ddd/ssh-scanner
 
 go 1.24
 

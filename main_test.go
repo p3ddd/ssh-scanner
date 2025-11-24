@@ -13,11 +13,12 @@ func TestGenerateIPs(t *testing.T) {
 	}{
 		{
 			cidr: "192.168.1.0/30",
-			// 192.168.1.0 (network) - skipped
+			// 192.168.1.0 (network)
 			// 192.168.1.1
 			// 192.168.1.2
-			// 192.168.1.3 (broadcast) - skipped
-			expected: []string{"192.168.1.1", "192.168.1.2"},
+			// 192.168.1.3 (broadcast)
+			// New logic emits all IPs in range
+			expected: []string{"192.168.1.0", "192.168.1.1", "192.168.1.2", "192.168.1.3"},
 		},
 		{
 			cidr: "10.0.0.1/32",
@@ -32,7 +33,12 @@ func TestGenerateIPs(t *testing.T) {
 			t.Fatalf("Failed to parse CIDR %s: %v", tt.cidr, err)
 		}
 
-		got := generateIPs(ip, ipNet)
+		// Consume channel
+		var got []string
+		for ip := range generateIPs(ip, ipNet) {
+			got = append(got, ip)
+		}
+
 		if !reflect.DeepEqual(got, tt.expected) {
 			t.Errorf("generateIPs(%s) = %v, want %v", tt.cidr, got, tt.expected)
 		}
@@ -79,4 +85,3 @@ func TestParseInput(t *testing.T) {
 		}
 	}
 }
-

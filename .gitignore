@@ -32,3 +32,5 @@ go.work.sum
 # .vscode/
 
 _/*
+/ssh-scanner
+*.txt

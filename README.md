@@ -11,7 +11,7 @@ go build -o ssh-scanner
 ## Usage
 
 ```bash
-./ssh-scanner [options] <CIDR|IP|Suffix>
+./ssh-scanner [options] <CIDR|IP|Suffix> [user] [password]
 ```
 
 ### Options
@@ -23,6 +23,12 @@ go build -o ssh-scanner
 | `-w` | Number of concurrent workers | `100`    |
 | `-t` | Connection timeout           | `3s`     |
 
+### Features
+
+- **High Performance**: Concurrent scanning with adjustable worker count.
+- **Smart Parsing**: Supports CIDR, single IPs, and suffix shortcuts (e.g., `3` -> `192.168.3.0/24`).
+- **User Friendly**: Colored output, real-time progress bar, and detailed statistics.
+
 ### Examples
 
 **Scan a subnet:**
@@ -31,20 +37,16 @@ go build -o ssh-scanner
 ./ssh-scanner 192.168.1.0/24
 ```
 
-**Scan with custom credentials:**
+**Scan with custom credentials (Flags):**
 
 ```bash
 ./ssh-scanner -u admin -p secret -w 500 10.0.0.0/16
 ```
 
-**Scan a single IP:**
+**Scan with custom credentials (Positional - Legacy Support):**
 
 ```bash
-./ssh-scanner 192.168.1.100
-```
-
-**Shortcut (scans `192.168.x.0/24`):**
-
-```bash
-./ssh-scanner 3  # Equivalent to 192.168.3.0/24
+./ssh-scanner 192.168.1.0/24 admin secret
+# Or using the shortcut:
+./ssh-scanner 3 root 123456
 ```

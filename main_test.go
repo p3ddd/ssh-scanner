@@ -35,7 +35,7 @@ func TestGenerateIPs(t *testing.T) {
 
 		// Consume channel
 		var got []string
-		for ip := range generateIPs(ip, ipNet) {
+		for ip := range generateIPs(ip, ipNet, 100) {
 			got = append(got, ip)
 		}
 
